@@ -1,10 +1,5 @@
 import React from "react";
-
-type TaskData = {
-  id: string;
-  title: string;
-  state: "TASK_ARCHIVED" | "TASK_INBOX" | "TASK_PINNED";
-};
+import { TaskData } from "../type";
 
 type TaskProps = {
   task: TaskData;
@@ -19,15 +14,42 @@ function Task({
 }: TaskProps) {
   return (
     <div className="list-item">
-      <label htmlFor={`title - ${id}`} aria-label={title}>
+      <label
+        htmlFor={`archiveTask-${id}`}
+        aria-label={`archiveTask-${id}`}
+        className="checkbox"
+      >
+        <input
+          type="checkbox"
+          disabled={true}
+          checked={state === "TASK_ARCHIVED"}
+          name="checked"
+          id={`archiveTask-${id}`}
+        />
+        <span className="checkbox-custom" onClick={() => onArchiveTask(id)} />
+      </label>
+
+      <label htmlFor={`title-${id}`} aria-label={title} className="title">
         <input
           type="text"
           value={title}
           readOnly={true}
           name="title"
-          id={`title - ${id}`}
+          id={`title-${id}`}
+          placeholder="Input title"
         />
       </label>
+      {state !== "TASK_ARCHIVED" && (
+        <button
+          className="pin-button"
+          onClick={() => onPinTask(id)}
+          id={`pinTask-${id}`}
+          aria-label={`pinTask-${id}`}
+          key={`pinTask-${id}`}
+        >
+          <span className={`icon-star`} />
+        </button>
+      )}
     </div>
   );
 }
